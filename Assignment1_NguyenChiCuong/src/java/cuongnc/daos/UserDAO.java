@@ -24,7 +24,7 @@ public class UserDAO {
         String roleID, userName, userAddress, userPhone = null;
         UserDTO dto = null;
         try {
-            String sql = "Select UserID, UserName, UserAddress, PhoneNum, RoleID, Password From tbl_User Where UserID = ? AND Password = ?";
+            String sql = "Select UserID, UserName, UserAddress, PhoneNum, RoleID From tbl_User Where UserID = ? AND Password = ?";
             con = cuongnc.utils.MyConnection.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, userID);
@@ -46,6 +46,26 @@ public class UserDAO {
         return dto;
     }
 
+    public boolean checkUserID(String userID) throws Exception {
+        boolean check = false;
+        try {
+            String sql = "Select UserName From tbl_User Where UserID = ? ";
+            con = cuongnc.utils.MyConnection.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, userID);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                check = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            cuongnc.utils.MyConnection.closeConnection();
+        }
+        return check;
+    }
+    
+    
     public static void main(String[] args) throws Exception {
         System.out.println(new UserDAO().checkLogin("admin", "123456"));
     }

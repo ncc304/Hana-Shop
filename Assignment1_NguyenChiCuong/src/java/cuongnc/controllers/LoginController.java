@@ -30,15 +30,20 @@ public class LoginController extends HttpServlet {
         try {
             String userID = request.getParameter("txtID");
             String password = request.getParameter("txtPassword");
-
-            UserDTO userDTO = new UserDAO().checkLogin(userID, password);
+            UserDAO userDAO = new UserDAO();
+           
+            boolean check = userDAO.checkUserID(userID);
             HttpSession session = request.getSession();
             
-            if (userDTO != null) {
+        if(check){
+            UserDTO userDTO = userDAO.checkLogin(userID, password);
+                if (userDTO != null) {
                 session.setAttribute("User_info", userDTO);
                 if (userDTO.getRoleID().equals("AD")) url = ADMIN;
                 if (userDTO.getRoleID().equals("US")) url = USER;
-            }else session.setAttribute("ERROR", "User is not found");
+            } else session.setAttribute("ERROR", "Wrong password");
+        }
+        else session.setAttribute("ERROR", "User is not found");
         } catch (Exception e) {
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
