@@ -6,6 +6,7 @@
 package cuongnc.daos;
 
 import cuongnc.dtos.UserDTO;
+import cuongnc.utils.MyConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,11 +25,15 @@ public class UserDAO {
         String roleID, userName, userAddress, userPhone = null;
         UserDTO dto = null;
         try {
-            String sql = "Select UserID, UserName, UserAddress, PhoneNum, RoleID From tbl_User Where UserID = ? AND Password = ?";
+            //String sql = "Select UserID, UserName, UserAddress, PhoneNum, RoleID From tbl_User Where UserID = ? AND Password = ?";
+            String sql = "declare @Password nvarchar(50) "
+                    + "set @Password = ? "
+                    + "Select UserID, UserName, UserAddress, PhoneNum, RoleID From tbl_User Where UserID = ? AND "
+                    + "CAST(Password AS varbinary(8)) = CAST(@Password AS varbinary(8))";
             con = cuongnc.utils.MyConnection.getConnection();
             ps = con.prepareStatement(sql);
-            ps.setString(1, userID);
-            ps.setString(2, password);
+            ps.setString(1, password);
+            ps.setString(2, userID);
             rs = ps.executeQuery();
             if (rs.next()) {
                 userID = rs.getString("UserID");
@@ -38,10 +43,8 @@ public class UserDAO {
                 roleID = rs.getString("RoleID");
                 dto = new UserDTO(userID, "", userName, userAddress, userPhone, roleID);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            cuongnc.utils.MyConnection.closeConnection();
+        }finally {
+            MyConnection.closeConnection(con, ps, rs);
         }
         return dto;
     }
@@ -57,16 +60,10 @@ public class UserDAO {
             if (rs.next()) {
                 check = true;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         } finally {
-            cuongnc.utils.MyConnection.closeConnection();
+            MyConnection.closeConnection(con, ps, rs);
         }
         return check;
     }
-    
-    
-    public static void main(String[] args) throws Exception {
-        System.out.println(new UserDAO().checkLogin("admin", "123456"));
-    }
+
 }
