@@ -35,6 +35,19 @@ public class ProductDTO {
         this.cateID = cateID;
     }
 
+    public ProductDTO(String proID, String proName, float proPrice, int proQuantity, boolean proStatus, String proImage, String proDescription, String cateID) {
+        this.proID = proID;
+        this.proName = proName;
+        this.proPrice = proPrice;
+        this.proQuantity = proQuantity;
+        this.proStatus = proStatus;
+        this.proImage = proImage;
+        this.proDescription = proDescription;
+        this.cateID = cateID;
+    }
+
+    
+    
     public String getProID() {
         return proID;
     }

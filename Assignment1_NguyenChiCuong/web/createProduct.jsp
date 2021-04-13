@@ -13,6 +13,9 @@
         <title>Create a new Products Page</title>
     </head>
     <body>
+        <c:if test="${sessionScope.User_info.roleID != 'AD' or sessionScope.User_info == null}">
+            <c:redirect url="login.jsp"></c:redirect>
+        </c:if>
         <a href="LoadAdminController">Back to Admin Page</a>
         <h1>Create a new Products:</h1>
         <form action="MainController" method="POST" enctype="multipart/form-data">

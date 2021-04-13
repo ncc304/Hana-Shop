@@ -24,24 +24,28 @@ import javax.servlet.http.HttpSession;
  */
 public class LoadUserController extends HttpServlet {
 
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            List<ProductDTO> listProduct = new ProductDAO().loadTable();
-            if(listProduct != null){
-                HttpSession session = request.getSession();
+            HttpSession session = request.getSession();
+            ProductDAO dao = new ProductDAO();
+            List<ProductDTO> listProduct = dao.loadTable();
+            if (listProduct != null) {
                 session.setAttribute("List_Product", listProduct);
             }
-            List<CategoryDTO> listCate = new CategoryDAO().getAllCategory();
-            if(listCate != null){
-                HttpSession session = request.getSession();
+            CategoryDAO cateDAO = new CategoryDAO();
+            List<CategoryDTO> listCate = cateDAO.getAllCategory();
+            if (listCate != null) {
                 session.setAttribute("List_Category", listCate);
+            }
+            List<Boolean> listStatus = dao.findAllStatus();
+            if(listStatus != null){
+                session.setAttribute("listStatus", listStatus);
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             request.getRequestDispatcher("index.jsp").forward(request, response);
         }
     }

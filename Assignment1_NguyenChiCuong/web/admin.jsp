@@ -18,9 +18,15 @@
         </c:if>
         <a href="MainController?action=Logout">Logout</a>
         <h1>Welcome ${sessionScope.User_info.userName}</h1>
+        <a href="LoadUserController">Shopping Cart</a> <br/>
+        
+        
+        
         <a href="createProduct.jsp">Create a new Product</a>
+        
+        
         <c:if test="${sessionScope.List_Product != null}">
-            <c:if test="${not empty sessionScope.List_Product}">
+            <c:if test="${not empty sessionScope.List_Product}">       
         <table border="1">
             <thead>
                 <tr>
@@ -34,6 +40,7 @@
                     <th>Status</th>
                     <th>Create Date</th>
                     <th>Delete</th>
+                    <th>Update</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,6 +49,7 @@
                     <td>${counter.count}</td>
                     <td>
                         <img src="${list.proImage}" height="80px" width="80px"/>
+                        
                     </td>   
                     <td>${list.proName}</td>
                     <td>${list.proDescription}</td>
@@ -57,7 +65,13 @@
                     <td>${list.proStatus}</td>
                     <td>${list.proCreateDate}</td>
                     <td>
-                        <a href="DeleteProductController?productID=${list.proID}">Delete</a>
+                        <a href="MainController?action=DeleteProduct&productID=${list.proID}">Delete</a>
+                    </td>
+                    <td>
+                        <form action="MainController" method="POST">
+                        <input type="hidden" name="productID" value="${list.proID}"/>
+                        <input type="submit" name="action" value="Update Product"/>
+                        </form>
                     </td>
                 </tr>
                 </c:forEach>

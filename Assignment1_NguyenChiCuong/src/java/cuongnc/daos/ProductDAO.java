@@ -33,7 +33,7 @@ public class ProductDAO {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
-                String id=rs.getString("ProductID");
+                String id = rs.getString("ProductID");
                 String proName = rs.getString("ProductName");
                 float proPrice = rs.getFloat("Price");
                 int proQuantity = rs.getInt("Quantity");
@@ -51,7 +51,7 @@ public class ProductDAO {
         return list;
     }
 
-    public ProductDTO findProductByID(String idProduct) throws Exception{
+    public ProductDTO findProductByID(String idProduct) throws Exception {
         ProductDTO dto = null;
         try {
             String sql = "Select ProductName,Price,Quantity,Status,Image,Description,CreateDate,CateID From tbl_Product "
@@ -60,7 +60,7 @@ public class ProductDAO {
             ps = con.prepareStatement(sql);
             ps.setString(1, idProduct);
             rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 String proName = rs.getString("ProductName");
                 float proPrice = rs.getFloat("Price");
                 int proQuantity = rs.getInt("Quantity");
@@ -71,12 +71,12 @@ public class ProductDAO {
                 String cateID = rs.getString("CateID");
                 dto = new ProductDTO(idProduct, proName, proPrice, proQuantity, proStatus, proImg, ProDescription, proDate, cateID);
             }
-        } finally{
+        } finally {
             MyConnection.closeConnection(con, ps, rs);
         }
-        return dto; 
+        return dto;
     }
-    
+
     public boolean createProduct(ProductDTO dto) throws Exception {
         boolean check = false;
         try {
@@ -100,7 +100,7 @@ public class ProductDAO {
         return check;
     }
 
-    public boolean deleteProduct(String idProduct) throws Exception{
+    public boolean deleteProduct(String idProduct) throws Exception {
         boolean check = false;
         try {
             String sql = "Update tbl_Product Set Status = 0 Where ProductID = ? ";
@@ -108,10 +108,51 @@ public class ProductDAO {
             ps = con.prepareStatement(sql);
             ps.setString(1, idProduct);
             check = ps.executeUpdate() > 0;
+        } finally {
+            MyConnection.closeConnection(con, ps, rs);
+        }
+        return check;
+    }
+
+    public boolean updateProduct(ProductDTO dto) throws Exception{
+        boolean check = false;
+        try {
+            String sql = "Update tbl_Product Set ProductName = ?, Price = ?, Quantity = ?, Status = ?, Image = ?, Description = ?, CateID = ? "
+                    + "Where ProductID = ?";
+            con = MyConnection.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, dto.getProName());
+            ps.setFloat(2, dto.getProPrice());
+            ps.setInt(3, dto.getProQuantity());
+            ps.setBoolean(4, dto.isProStatus());
+            ps.setString(5, dto.getProImage());
+            ps.setString(6, dto.getProDescription());
+            ps.setString(7, dto.getCateID());
+            ps.setString(8, dto.getProID());
+            check = ps.executeUpdate() > 0;
         } finally{
             MyConnection.closeConnection(con, ps, rs);
         }
         return check;
     }
     
+    public List<Boolean> findAllStatus() throws Exception {
+        List<Boolean> result = null;
+        try {
+            String sql = "select distinct status from tbl_Product";
+            con = MyConnection.getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                if (result == null) {
+                    result = new ArrayList<>();
+                }
+                result.add(rs.getBoolean("status"));
+            }
+        } finally {
+            MyConnection.closeConnection(con, ps, rs);
+        }
+        return result;
+    }
+
 }

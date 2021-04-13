@@ -36,6 +36,14 @@
         <servlet-name>DeleteProductController</servlet-name>
         <servlet-class>cuongnc.controllers.DeleteProductController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateProductController</servlet-name>
+        <servlet-class>cuongnc.controllers.UpdateProductController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MainUpdateProductController</servlet-name>
+        <servlet-class>cuongnc.controllers.MainUpdateProductController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -71,6 +79,14 @@
     <servlet-mapping>
         <servlet-name>DeleteProductController</servlet-name>
         <url-pattern>/DeleteProductController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProductController</servlet-name>
+        <url-pattern>/UpdateProductController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MainUpdateProductController</servlet-name>
+        <url-pattern>/MainUpdateProductController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

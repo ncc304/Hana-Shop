@@ -23,6 +23,10 @@ public class MainController extends HttpServlet {
     private static final String ERROR = "error.jsp";
     private static final String LOGOUT = "LogoutController";
     private static final String CREATE_PRODUCT = "AddProductController";
+    private static final String DELETE_PRODUCT = "DeleteProductController";
+    private static final String UPDATE_PRODUCT = "UpdateProductController";
+    private static final String MAIN_UPDATE_PRODUCT = "MainUpdateProductController";
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -33,6 +37,10 @@ public class MainController extends HttpServlet {
             if(action.equals("Login")) url = LOGIN;
             else if(action.equals("Logout")) url = LOGOUT;
             else if(action.equals("Create")) url = CREATE_PRODUCT;
+            else if(action.equals("DeleteProduct")) url = DELETE_PRODUCT;
+            else if(action.equals("Update Product")) url = UPDATE_PRODUCT;
+            else if(action.equals("Update this")) url = MAIN_UPDATE_PRODUCT;
+            
             else session.setAttribute("ERROR", "Action is invalid");
         } catch (Exception e) {
         }finally{

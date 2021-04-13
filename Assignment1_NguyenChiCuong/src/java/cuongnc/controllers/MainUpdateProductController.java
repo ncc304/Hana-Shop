@@ -5,46 +5,62 @@
  */
 package cuongnc.controllers;
 
-import cuongnc.daos.UserDAO;
-import cuongnc.dtos.UserDTO;
+import cuongnc.daos.ProductDAO;
+import cuongnc.dtos.ProductDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Paths;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 /**
  *
  * @author nguye
  */
-public class LoginController extends HttpServlet {
-    private static final String ERROR = "login.jsp";
-    private static final String ADMIN = "LoadAdminController";
-    private static final String USER = "LoadUserController";
+@MultipartConfig
+public class MainUpdateProductController extends HttpServlet {
+
+    private static final String ERROR = "updateProduct.jsp";
+    private static final String SUCCESS = "LoadAdminController";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String userID = request.getParameter("txtID");
-            String password = request.getParameter("txtPassword");
-            UserDAO userDAO = new UserDAO();
-           
-            boolean check = userDAO.checkUserID(userID);
-            HttpSession session = request.getSession();
+            String proID = request.getParameter("txtProductID");
+            String proName = request.getParameter("txtProductName");
+            float proPrice = Float.parseFloat(request.getParameter("txtProductPrice"));
+            int proQuantity = Integer.parseInt(request.getParameter("txtProductQuantity"));
+            boolean proStatus = Boolean.parseBoolean(request.getParameter("cbbStatus"));
+            String proDescription = request.getParameter("txtProductDescription");
+            String cateID = request.getParameter("cbbCate");
+            String proImg = "";
+            try {
+                Part part = request.getPart("ProductImage");
+                String applicationName = ((HttpServletRequest) request).getContextPath().replace("/", "");
+                String realPath = request.getServletContext().getRealPath("/images");
+                String[] saveFile = realPath.split(applicationName);
+                String href = saveFile[0] + applicationName;
+                String fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
+                part.write(href + "/web/images/" + fileName);
+                proImg = "images" + "\\" + fileName;
+            } catch (Exception e) {
+                proImg = request.getParameter("proImg");
+            }
             
-        if(check){
-            UserDTO userDTO = userDAO.checkLogin(userID, password);
-                if (userDTO != null) {
-                session.setAttribute("User_info", userDTO);
-                if (userDTO.getRoleID().equals("AD")) url = ADMIN;
-                if (userDTO.getRoleID().equals("US")) url = USER;
-            } else session.setAttribute("ERROR", "Wrong password");
-        }
-        else session.setAttribute("ERROR", "User is not found");
+            ProductDAO dao = new ProductDAO();
+            ProductDTO dto = new ProductDTO(proID, proName, proPrice, proQuantity, proStatus, proImg, proDescription, cateID);
+            boolean check = dao.updateProduct(dto);
+            if(check){
+                url = SUCCESS;
+            }
         } catch (Exception e) {
+            
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

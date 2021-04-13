@@ -31,6 +31,7 @@ public class LoadAdminController extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("List_Product", listProduct);
             }
+            
         } catch (Exception e) {
             e.printStackTrace();
         }finally{

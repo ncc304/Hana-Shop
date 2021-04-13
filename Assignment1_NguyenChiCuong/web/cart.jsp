@@ -13,6 +13,9 @@
         <title>Cart Page</title>
     </head>
     <body>
+        <c:if test="${sessionScope.User_info.roleID != 'US' or sessionScope.User_info == null}">
+            <c:redirect url="login.jsp"></c:redirect>
+        </c:if>
         <a href="LoadUserController">Back to Shopping Page</a>
         <h1>Your Cart:</h1>
         

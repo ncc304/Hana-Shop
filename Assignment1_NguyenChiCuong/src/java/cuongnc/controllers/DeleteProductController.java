@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class DeleteProductController extends HttpServlet {
 
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -27,8 +26,8 @@ public class DeleteProductController extends HttpServlet {
             ProductDAO dao = new ProductDAO();
             boolean check = dao.deleteProduct(productID);
         } catch (Exception e) {
-        e.printStackTrace();
-        }finally{
+            e.printStackTrace();
+        } finally {
             request.getRequestDispatcher("LoadAdminController").forward(request, response);
         }
     }
