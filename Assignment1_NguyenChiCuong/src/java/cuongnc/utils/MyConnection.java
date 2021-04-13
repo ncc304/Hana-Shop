@@ -16,16 +16,12 @@ import java.sql.ResultSet;
  */
 public class MyConnection {
 
-    static Connection con = null;
-    static PreparedStatement ps = null;
-    static ResultSet rs = null;
-
     public static Connection getConnection() throws Exception {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         return DriverManager.getConnection("jdbc:sqlserver://localhost;databasename=Assignment1_NguyenChiCuong", "sa", "123456");
     }
 
-    public static void closeConnection() throws Exception{
+    public static void closeConnection(Connection con, PreparedStatement ps, ResultSet rs) throws Exception{
         if(rs != null) {
             rs.close();
         }

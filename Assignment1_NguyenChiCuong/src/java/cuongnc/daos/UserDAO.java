@@ -25,7 +25,6 @@ public class UserDAO {
         String roleID, userName, userAddress, userPhone = null;
         UserDTO dto = null;
         try {
-            //String sql = "Select UserID, UserName, UserAddress, PhoneNum, RoleID From tbl_User Where UserID = ? AND Password = ?";
             String sql = "declare @Password nvarchar(50) "
                     + "set @Password = ? "
                     + "Select UserID, UserName, UserAddress, PhoneNum, RoleID From tbl_User Where UserID = ? AND "

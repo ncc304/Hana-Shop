@@ -5,10 +5,12 @@
  */
 package cuongnc.controllers;
 
-import cuongnc.daos.UserDAO;
-import cuongnc.dtos.UserDTO;
+import cuongnc.daos.CategoryDAO;
+import cuongnc.daos.ProductDAO;
+import cuongnc.dtos.CategoryDTO;
+import cuongnc.dtos.ProductDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,36 +21,21 @@ import javax.servlet.http.HttpSession;
  *
  * @author nguye
  */
-public class LoginController extends HttpServlet {
-    private static final String ERROR = "login.jsp";
-    private static final String ADMIN = "LoadAdminController";
-    private static final String USER = "index.jsp";
+public class LoadAdminController extends HttpServlet {    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
         try {
-            String userID = request.getParameter("txtID");
-            String password = request.getParameter("txtPassword");
-            UserDAO userDAO = new UserDAO();
-           
-            boolean check = userDAO.checkUserID(userID);
-            HttpSession session = request.getSession();
-            
-        if(check){
-            UserDTO userDTO = userDAO.checkLogin(userID, password);
-                if (userDTO != null) {
-                session.setAttribute("User_info", userDTO);
-                if (userDTO.getRoleID().equals("AD")) url = ADMIN;
-                if (userDTO.getRoleID().equals("US")) url = USER;
-            } else session.setAttribute("ERROR", "Wrong password");
-        }
-        else session.setAttribute("ERROR", "User is not found");
+            List<ProductDTO> listProduct = new ProductDAO().loadTable();
+            if(listProduct != null){
+                HttpSession session = request.getSession();
+                session.setAttribute("List_Product", listProduct);
+            }
         } catch (Exception e) {
-        } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            e.printStackTrace();
+        }finally{
+            request.getRequestDispatcher("admin.jsp").forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

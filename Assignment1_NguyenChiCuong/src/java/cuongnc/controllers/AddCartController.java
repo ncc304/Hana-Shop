@@ -5,7 +5,9 @@
  */
 package cuongnc.controllers;
 
-import cuongnc.daos.UserDAO;
+import cuongnc.daos.ProductDAO;
+import cuongnc.dtos.CartDTO;
+import cuongnc.dtos.ProductDTO;
 import cuongnc.dtos.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,36 +21,30 @@ import javax.servlet.http.HttpSession;
  *
  * @author nguye
  */
-public class LoginController extends HttpServlet {
-    private static final String ERROR = "login.jsp";
-    private static final String ADMIN = "LoadAdminController";
-    private static final String USER = "index.jsp";
+public class AddCartController extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
         try {
-            String userID = request.getParameter("txtID");
-            String password = request.getParameter("txtPassword");
-            UserDAO userDAO = new UserDAO();
-           
-            boolean check = userDAO.checkUserID(userID);
+            String productID = request.getParameter("productID");
             HttpSession session = request.getSession();
-            
-        if(check){
-            UserDTO userDTO = userDAO.checkLogin(userID, password);
-                if (userDTO != null) {
-                session.setAttribute("User_info", userDTO);
-                if (userDTO.getRoleID().equals("AD")) url = ADMIN;
-                if (userDTO.getRoleID().equals("US")) url = USER;
-            } else session.setAttribute("ERROR", "Wrong password");
-        }
-        else session.setAttribute("ERROR", "User is not found");
+            CartDTO shoppingCart = (CartDTO) session.getAttribute("shoppingCart");
+            UserDTO userDTO = (UserDTO) session.getAttribute("User_info");
+            String userID = userDTO.getUserID();
+            if(shoppingCart == null){
+                shoppingCart = new CartDTO(userID);
+            }
+            ProductDAO dao = new ProductDAO();
+            ProductDTO dto = dao.findProductByID(productID);
+            dto.setProQuantity(1);
+            shoppingCart.addCart(dto);
+            session.setAttribute("shoppingCart", shoppingCart);
         } catch (Exception e) {
-        } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            e.printStackTrace();
+        }finally{
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

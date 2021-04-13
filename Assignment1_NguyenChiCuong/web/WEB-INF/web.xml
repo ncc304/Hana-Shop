@@ -12,6 +12,30 @@
         <servlet-name>LogoutController</servlet-name>
         <servlet-class>cuongnc.controllers.LogoutController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoadAdminController</servlet-name>
+        <servlet-class>cuongnc.controllers.LoadAdminController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadUserController</servlet-name>
+        <servlet-class>cuongnc.controllers.LoadUserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddCartController</servlet-name>
+        <servlet-class>cuongnc.controllers.AddCartController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCartController</servlet-name>
+        <servlet-class>cuongnc.controllers.DeleteCartController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddProductController</servlet-name>
+        <servlet-class>cuongnc.controllers.AddProductController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteProductController</servlet-name>
+        <servlet-class>cuongnc.controllers.DeleteProductController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -24,12 +48,36 @@
         <servlet-name>LogoutController</servlet-name>
         <url-pattern>/LogoutController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadAdminController</servlet-name>
+        <url-pattern>/LoadAdminController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadUserController</servlet-name>
+        <url-pattern>/LoadUserController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddCartController</servlet-name>
+        <url-pattern>/AddCartController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCartController</servlet-name>
+        <url-pattern>/DeleteCartController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddProductController</servlet-name>
+        <url-pattern>/AddProductController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteProductController</servlet-name>
+        <url-pattern>/DeleteProductController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>LoadUserController</welcome-file>
     </welcome-file-list>
 </web-app>

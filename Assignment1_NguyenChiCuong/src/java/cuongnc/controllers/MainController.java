@@ -5,11 +5,9 @@
  */
 package cuongnc.controllers;
 
-import cuongnc.daos.UserDAO;
-import cuongnc.dtos.UserDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,10 +17,12 @@ import javax.servlet.http.HttpSession;
  *
  * @author nguye
  */
+@MultipartConfig
 public class MainController extends HttpServlet {
     private static final String LOGIN = "LoginController";
     private static final String ERROR = "error.jsp";
     private static final String LOGOUT = "LogoutController";
+    private static final String CREATE_PRODUCT = "AddProductController";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -32,12 +32,12 @@ public class MainController extends HttpServlet {
             String action = request.getParameter("action");
             if(action.equals("Login")) url = LOGIN;
             else if(action.equals("Logout")) url = LOGOUT;
+            else if(action.equals("Create")) url = CREATE_PRODUCT;
             else session.setAttribute("ERROR", "Action is invalid");
         } catch (Exception e) {
         }finally{
             request.getRequestDispatcher(url).forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
