@@ -29,7 +29,7 @@ public class UserDAO {
                     + "set @Password = ? "
                     + "Select UserID, UserName, UserAddress, PhoneNum, RoleID From tbl_User Where UserID = ? AND "
                     + "CAST(Password AS varbinary(8)) = CAST(@Password AS varbinary(8))";
-            con = cuongnc.utils.MyConnection.getConnection();
+            con = MyConnection.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, password);
             ps.setString(2, userID);
@@ -52,7 +52,7 @@ public class UserDAO {
         boolean check = false;
         try {
             String sql = "Select UserName From tbl_User Where UserID = ? ";
-            con = cuongnc.utils.MyConnection.getConnection();
+            con = MyConnection.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, userID);
             rs = ps.executeQuery();

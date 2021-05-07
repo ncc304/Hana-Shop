@@ -6,9 +6,11 @@
 package cuongnc.utils;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 
 /**
  *
@@ -17,8 +19,11 @@ import java.sql.ResultSet;
 public class MyConnection {
 
     public static Connection getConnection() throws Exception {
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        return DriverManager.getConnection("jdbc:sqlserver://localhost;databasename=Assignment1_NguyenChiCuong", "sa", "123456");
+        Context context = new InitialContext();
+        Context tomcatCtx = (Context) context.lookup("java:comp/env");
+        DataSource ds = (DataSource) tomcatCtx.lookup("DB");
+        Connection con = ds.getConnection();
+        return con;
     }
 
     public static void closeConnection(Connection con, PreparedStatement ps, ResultSet rs) throws Exception{

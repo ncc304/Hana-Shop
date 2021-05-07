@@ -114,7 +114,7 @@ public class ProductDAO {
         return check;
     }
 
-    public boolean updateProduct(ProductDTO dto) throws Exception{
+    public boolean updateProduct(ProductDTO dto) throws Exception {
         boolean check = false;
         try {
             String sql = "Update tbl_Product Set ProductName = ?, Price = ?, Quantity = ?, Status = ?, Image = ?, Description = ?, CateID = ? "
@@ -130,12 +130,12 @@ public class ProductDAO {
             ps.setString(7, dto.getCateID());
             ps.setString(8, dto.getProID());
             check = ps.executeUpdate() > 0;
-        } finally{
+        } finally {
             MyConnection.closeConnection(con, ps, rs);
         }
         return check;
     }
-    
+
     public List<Boolean> findAllStatus() throws Exception {
         List<Boolean> result = null;
         try {
@@ -153,6 +153,42 @@ public class ProductDAO {
             MyConnection.closeConnection(con, ps, rs);
         }
         return result;
+    }
+
+    public List<ProductDTO> searchProduct(String proName, float from, float to, String cateID, int page_size, int index) throws Exception {
+        List<ProductDTO> list = null;
+        try {
+            String sql = "Select ProductID, ProductName, Price, Quantity, Status, Image, Description, CreateDate, CateID From tbl_Product "
+                    + "where (ProductName like ? or (Price > ? and Price < ?) or CateID = ?) and Status = 1 "
+                    + "order by ProductID offset ?* (?-1) rows fetch next ? row only";
+            con = MyConnection.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, proName);
+            ps.setFloat(2, from);
+            ps.setFloat(3, to);
+            ps.setString(4, cateID);
+            ps.setInt(5, page_size);
+            ps.setInt(6, index);
+            ps.setInt(7, page_size);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                list = new ArrayList<>();
+                String id = rs.getString("ProductID");
+                String name = rs.getString("ProductName");
+                float proPrice = rs.getFloat("Price");
+                int proQuantity = rs.getInt("Quantity");
+                boolean proStatus = rs.getBoolean("Status");
+                String proImg = rs.getString("Image");
+                String proDescription = rs.getString("Description");
+                Date proCreateDate = rs.getDate("CreateDate");
+                String cate = rs.getString("CateID");
+                ProductDTO dto = new ProductDTO(id, name, proPrice, proQuantity, proStatus, proImg, proDescription, proCreateDate, cate);
+                list.add(dto);
+            }
+        } finally {
+            MyConnection.closeConnection(con, ps, rs);
+        }
+        return list;
     }
 
 }

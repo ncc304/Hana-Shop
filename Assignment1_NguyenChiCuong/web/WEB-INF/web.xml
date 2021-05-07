@@ -44,6 +44,14 @@
         <servlet-name>MainUpdateProductController</servlet-name>
         <servlet-class>cuongnc.controllers.MainUpdateProductController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>searchIndexController</servlet-name>
+        <servlet-class>cuongnc.controllers.SearchIndexController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CheckSearchIndexController</servlet-name>
+        <servlet-class>cuongnc.controllers.CheckSearchIndexController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -88,6 +96,14 @@
         <servlet-name>MainUpdateProductController</servlet-name>
         <url-pattern>/MainUpdateProductController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>searchIndexController</servlet-name>
+        <url-pattern>/searchIndexController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckSearchIndexController</servlet-name>
+        <url-pattern>/CheckSearchIndexController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -96,4 +112,10 @@
     <welcome-file-list>
         <welcome-file>LoadUserController</welcome-file>
     </welcome-file-list>
+    <resource-ref>
+        <res-ref-name>DB</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
 </web-app>

@@ -24,14 +24,13 @@
             <a href="LoadAdminController">Navigate to Admin Page</a>
         </c:if>
         <h1>Hana Shop</h1>
-        
+
         <form action="MainController" method="POST">
             <input type="text" name="txtProductName" placeholder="ProductName"/>
+            <input type="text" name="txtFrom" placeholder="From"/> 
+            <input type="text" name="txtTo" placeholder="To"/>
 
-            <input type="number" name="txtFrom" placeholder="From"/> 
-            <input type="number" name="txtTo" placeholder="To"/>
-            
-`           Cate: <select name="cbbCate">
+        Cate: <select name="cbbCate">
                 <c:if test="${sessionScope.List_Category != null}">
                     <c:forEach var="listCate" items="${sessionScope.List_Category}">
                         <option value="${listCate.cateID}">${listCate.cateName}</option>
@@ -40,7 +39,7 @@
             </select>
             <input type="submit" name="action" value="SearchNow"/>
         </form> <br/>
-        
+
         <c:if test="${sessionScope.User_info.roleID == 'US'}">
             <a href="cart.jsp">View Cart</a>
         </c:if>
